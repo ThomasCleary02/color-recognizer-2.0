@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File
-from image_analyzer import ImageAnalyzer
+from app.image_analyzer import ImageAnalyzer
 import tempfile
 import os
 

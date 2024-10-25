@@ -1,6 +1,6 @@
-from app.rekognition import parse_labels, convert_coordinates, send_request
-from app.img_processer import analyze_snippet
-from app.s3_image import S3Image
+from rekognition import parse_labels, convert_coordinates, send_request
+from img_processer import analyze_snippet
+from s3_image import S3Image
 
 
 class ImageAnalyzer:
