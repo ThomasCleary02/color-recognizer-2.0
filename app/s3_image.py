@@ -1,6 +1,5 @@
 from PIL import Image
 import boto3
-import io
 
 class S3Image:
 

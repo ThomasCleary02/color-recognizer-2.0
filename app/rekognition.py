@@ -1,5 +1,4 @@
 import boto3
-import json
 
 rekognition = boto3.client('rekognition')
 
@@ -7,7 +6,6 @@ def send_request(max_labels: int, min_confidence: int, filepath: str, bucket: st
     try:
         rekognition = boto3.client('rekognition')
         
-        # Wait for a short time to ensure S3 consistency
         import time
         time.sleep(2)  # Add a small delay after upload
         
@@ -87,14 +85,4 @@ def convert_coordinates(labels: list, img_height: int, img_width: int):
         print(f"Unexpected error converting coordinates: {e}")
         return []
 
-if __name__ == "__main__":
-    
-    data = send_request(3, 80, "test")
-
-    parsed_data = parse_labels(data)
-
-    coordinates = convert_coordinates(parsed_data, 4262, 6393)
-
-    for c in coordinates:
-        print(c)
     

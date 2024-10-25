@@ -1,7 +1,12 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from app.image_analyzer import ImageAnalyzer
+from dotenv import load_dotenv, find_dotenv
 import tempfile
 import os
+
+load_dotenv(find_dotenv())
+
+bucket = os.getenv('BUCKET')
 
 app = FastAPI()
 
@@ -20,7 +25,7 @@ async def analyze_image(
         with ImageAnalyzer(
             image_path=temp_path,
             filename=file.filename,
-            bucket="color-analyzer-images"
+            s3_bucket=bucket
         ) as analyzer:
             results = analyzer.analyze(
                 max_labels=max_labels,

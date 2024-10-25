@@ -1,11 +1,11 @@
-from rekognition import parse_labels, convert_coordinates, send_request
-from img_processer import analyze_snippet
-from s3_image import S3Image
+from .rekognition import parse_labels, convert_coordinates, send_request
+from .img_processer import analyze_snippet
+from .s3_image import S3Image
 
 
 class ImageAnalyzer:
-    def __init__(self, image_path: str, filename: str, bucket: str):
-        self.image = S3Image(image_path, filename, bucket)
+    def __init__(self, image_path: str, filename: str, s3_bucket: str):
+        self.image = S3Image(image_path, filename, s3_bucket)
 
     def analyze(self, max_labels: int, min_confidence: int):
         try:
