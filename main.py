@@ -6,15 +6,13 @@ import os
 
 load_dotenv(find_dotenv())
 
-bucket = os.getenv('BUCKET')
+bucket = os.getenv('S3_BUCKET')
 
 app = FastAPI()
 
 @app.post("/analyze-image")
 async def analyze_image(
     file: UploadFile = File(...),
-    max_labels: int = 5,
-    min_confidence: int = 75
 ):
     try:
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -28,14 +26,32 @@ async def analyze_image(
             s3_bucket=bucket
         ) as analyzer:
             results = analyzer.analyze(
-                max_labels=max_labels,
-                min_confidence=min_confidence
+                max_labels= 5,
+                min_confidence=80
             )
-            
-        return {
-            "status": "success",
-            "results": results
-        }
+        if results:
+            return {
+                "status": "success",
+                "results": results,
+                "confidence": "high"
+            }
+        else:
+            results = analyzer.analyze(
+                max_labels=5,
+                min_confidence=60,
+            )
+            if results:
+                return {
+                    "status": "success",
+                    "results": results,
+                    "confidence": "low"
+                }
+            else:
+                return {
+                    "status": "Failed",
+                    "results": "None"
+                }
+    
             
     except Exception as e:
         raise HTTPException(
