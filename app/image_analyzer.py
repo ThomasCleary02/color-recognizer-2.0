@@ -1,7 +1,11 @@
 from .rekognition import parse_labels, convert_coordinates, send_request
 from .img_processer import analyze_snippet
+import logging
 from .s3_image import S3Image
 
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 class ImageAnalyzer:
     def __init__(self, image_path: str, filename: str, s3_bucket: str):
@@ -9,6 +13,7 @@ class ImageAnalyzer:
 
     def analyze(self, max_labels: int, min_confidence: int):
         try:
+
             self.image.upload()
 
             data = send_request(
